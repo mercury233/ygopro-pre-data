@@ -4,7 +4,7 @@
 function c37337327.initial_effect(c)
 	--link summon
 	c:EnableReviveLimit()
-	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsLinkRace,RACE_WARRIOR+RACE_MACHINE),2,2,c37337327.lcheck)
+	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsRace,RACE_WARRIOR+RACE_MACHINE),2,2,c37337327.lcheck)
 	--synchro effect
 	local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(37337327,0))
@@ -29,7 +29,7 @@ function c37337327.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c37337327.lcheck(g,lc)
-	return g:IsExists(Card.IsLinkType,1,nil,TYPE_TUNER)
+	return g:IsExists(Card.IsType,1,nil,TYPE_TUNER)
 end
 function c37337327.sccon(e,tp,eg,ep,ev,re,r,rp)
 	local ph=Duel.GetCurrentPhase()

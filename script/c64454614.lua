@@ -3,7 +3,7 @@
 --Script by nekrozar
 function c64454614.initial_effect(c)
 	--link summon
-	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsLinkRace,RACE_WARRIOR),3,3,c64454614.lcheck)
+	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsRace,RACE_WARRIOR),3,3,c64454614.lcheck)
 	c:EnableReviveLimit()
 	--negate
 	local e1=Effect.CreateEffect(c)
