@@ -69,7 +69,7 @@ function c101004034.desop(e,tp,eg,ep,ev,re,r,rp)
 	end
 end
 function c101004034.plfilter(c)
-	return c:IsFacedown() and not c:IsStatus(STATUS_SUMMONING) and not c:IsStatus(STATUS_SUMMON_DISABLED)
+	return not c:IsStatus(STATUS_SUMMONING) and not c:IsStatus(STATUS_SUMMON_DISABLED)
 end
 function c101004034.gfilter(c,g)
 	return not g:IsContains(c)
