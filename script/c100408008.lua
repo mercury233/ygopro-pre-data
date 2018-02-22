@@ -18,7 +18,7 @@ function c100408008.tgfilter1(c,tp)
 		and Duel.IsExistingMatchingCard(c100408008.tgfilter2,tp,LOCATION_DECK,0,1,nil,lv)
 end
 function c100408008.tgfilter2(c,lv)
-	return c:IsSetCard(0x8e) and not c:IsLevel(lv) and c:IsAbleToGrave()
+	return c:IsSetCard(0x8e) and c:IsLevelAbove(0) and not c:IsLevel(lv) and c:IsAbleToGrave()
 end
 function c100408008.spfilter1(c,tp)
 	return c:IsAbleToGrave() and Duel.GetMZoneCount(tp,c)>0
@@ -79,7 +79,7 @@ function c100408008.activate(e,tp,eg,ep,ev,re,r,rp)
 		local tc=Duel.GetFirstTarget()
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TOGRAVE)
 		local tg=Duel.SelectMatchingCard(tp,c100408008.spfilter1,tp,LOCATION_MZONE,0,1,1,nil,tp)
-		if g:GetCount()>0 and Duel.SendtoGrave(g,REASON_EFFECT)~=0 and g:GetFirst():IsLocation(LOCATION_GRAVE)
+		if tg:GetCount()>0 and Duel.SendtoGrave(tg,REASON_EFFECT)~=0 and tg:GetFirst():IsLocation(LOCATION_GRAVE)
 			and tc:IsRelateToEffect(e) then
 			Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEUP)
 		end
