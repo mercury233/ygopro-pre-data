@@ -2,6 +2,7 @@
 --Restoration Point Guard
 --Scripted by Eerie Code
 function c101005037.initial_effect(c)
+	--link summon
 	c:EnableReviveLimit()
 	aux.AddLinkProcedure(c,aux.FilterBoolFunction(Card.IsLinkRace,RACE_CYBERSE),2,2)
 	--indes
@@ -26,7 +27,7 @@ function c101005037.incon(e,tp,eg,ep,ev,re,r,rp)
 end
 function c101005037.inop(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
-	if not c:IsRelateToEffect(e) then return end
+	if not c:IsRelateToEffect(e) or c:IsFacedown() then return end
 	local e1=Effect.CreateEffect(c)
 	e1:SetType(EFFECT_TYPE_SINGLE)
 	e1:SetCode(EFFECT_INDESTRUCTABLE_BATTLE)
