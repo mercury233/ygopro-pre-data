@@ -35,7 +35,7 @@ function c100227020.activate(e,tp,eg,ep,ev,re,r,rp)
 			Duel.ShuffleHand(tp)
 			if tc:IsCode(100227020) then
 				if Duel.SendtoGrave(tc,REASON_EFFECT)~=0 and tc:IsLocation(LOCATION_GRAVE) then
-					local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,aux.ExceptThisCard(e))
+					local sg=Duel.GetMatchingGroup(aux.TRUE,tp,LOCATION_ONFIELD,LOCATION_ONFIELD,e:GetHandler())
 					Duel.Destroy(sg,REASON_EFFECT)
 					local tg=Duel.GetOperatedGroup():Filter(Card.IsLocation,nil,LOCATION_GRAVE)
 					if tg:GetCount()>0 then
