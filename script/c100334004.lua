@@ -21,35 +21,31 @@ function Auxiliary.GetLinkMaterials(tp,f,lc)
 	if mg2:GetCount()>0 then mg:Merge(mg2) end
 	return mg
 end
-function Auxiliary.LCheckOtherMaterial(c,sg,lc)
+function Auxiliary.LCheckOtherMaterial(c,mg,lc)
 	local le={c:IsHasEffect(EFFECT_EXTRA_LINK_MATERIAL)}
 	for _,te in pairs(le) do
 		local f=te:GetValue()
-		if f and not f(te,lc,sg) then return false end
+		if f and not f(te,lc,mg) then return false end
 	end
 	return true
 end
-function Auxiliary.LCheckMaterialCompatibility(sg,lc)
-	for tc in Auxiliary.Next(sg) do
-		local mg=sg:Filter(aux.TRUE,tc)
-		local res=Auxiliary.LCheckOtherMaterial(tc,mg,lc)
-		mg:DeleteGroup()
-		if not res then return false end
-	end
-	return true
+function Auxiliary.LUncompatibilityFilter(c,sg,lc)
+	local mg=sg:Filter(aux.TRUE,c)
+	return not Auxiliary.LCheckOtherMaterial(c,mg,lc)
 end
 function Auxiliary.LCheckRecursive(c,tp,sg,mg,lc,ct,minc,maxc,gf)
 	sg:AddCard(c)
 	ct=ct+1
-	local res=Auxiliary.LCheckMaterialCompatibility(sg,lc)
-		and (Auxiliary.LCheckGoal(tp,sg,lc,minc,ct,gf)
-			or ct<maxc and mg:IsExists(Auxiliary.LCheckRecursive,1,sg,tp,sg,mg,lc,ct,minc,maxc,gf))
+	local res=Auxiliary.LCheckGoal(tp,sg,lc,minc,ct,gf)
+		or ct<maxc and mg:IsExists(Auxiliary.LCheckRecursive,1,sg,tp,sg,mg,lc,ct,minc,maxc,gf)
 	sg:RemoveCard(c)
 	ct=ct-1
 	return res
 end
 function Auxiliary.LCheckGoal(tp,sg,lc,minc,ct,gf)
-	return ct>=minc and sg:CheckWithSumEqual(Auxiliary.GetLinkCount,lc:GetLink(),ct,ct) and Duel.GetLocationCountFromEx(tp,tp,sg,lc)>0 and (not gf or gf(sg))
+	return ct>=minc and sg:CheckWithSumEqual(Auxiliary.GetLinkCount,lc:GetLink(),ct,ct)
+		and Duel.GetLocationCountFromEx(tp,tp,sg,lc)>0 and (not gf or gf(sg))
+		and not sg:IsExists(Auxiliary.LUncompatibilityFilter,1,nil,sg,lc)
 end
 function Auxiliary.LinkCondition(f,minc,maxc,gf)
 	return	function(e,c)
@@ -114,12 +110,12 @@ end
 	e1:SetValue(c100334004.matval)
 	c:RegisterEffect(e1)
 	local e2=Effect.CreateEffect(c)
-    e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
-    e2:SetCode(EVENT_BE_MATERIAL)
-    e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
-    e2:SetCondition(c100334004.ctcon)
-    e2:SetOperation(c100334004.ctop)
-    c:RegisterEffect(e2)
+	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_CONTINUOUS)
+	e2:SetCode(EVENT_BE_MATERIAL)
+	e2:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e2:SetCondition(c100334004.ctcon)
+	e2:SetOperation(c100334004.ctop)
+	c:RegisterEffect(e2)
 	--search
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(100334004,0))
@@ -134,19 +130,19 @@ end
 	c:RegisterEffect(e3)
 end
 function c100334004.matcon(e)
-    return Duel.GetFlagEffect(e:GetHandlerPlayer(),100334004)==0
+	return Duel.GetFlagEffect(e:GetHandlerPlayer(),100334004)==0
 end
 function c100334004.mfilter(c)
-    return c:IsLocation(LOCATION_MZONE) and c:IsRace(RACE_CYBERSE)
+	return c:IsLocation(LOCATION_MZONE) and c:IsRace(RACE_CYBERSE)
 end
 function c100334004.matval(e,c,mg)
-    return c:IsSetCard(0x101) and mg:IsExists(c100334004.mfilter,1,nil)
+	return c:IsSetCard(0x101) and mg:IsExists(c100334004.mfilter,1,nil)
 end
 function c100334004.ctcon(e,tp,eg,ep,ev,re,r,rp)
-    return e:GetHandler():IsPreviousLocation(LOCATION_HAND)
+	return e:GetHandler():IsPreviousLocation(LOCATION_HAND)
 end
 function c100334004.ctop(e,tp,eg,ep,ev,re,r,rp)
-    Duel.RegisterFlagEffect(tp,100334004,RESET_PHASE+PHASE_END,0,1)
+	Duel.RegisterFlagEffect(tp,100334004,RESET_PHASE+PHASE_END,0,1)
 end
 function c100334004.thcon(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
