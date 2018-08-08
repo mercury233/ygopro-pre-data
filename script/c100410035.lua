@@ -1,4 +1,4 @@
---麗の魔妖-妖狐
+--麗の魔妖－妖狐
 --Beautiful Mayakashi – Youko
 function c100410035.initial_effect(c)
 	c:SetUniqueOnField(1,0,100410035)
@@ -10,7 +10,7 @@ function c100410035.initial_effect(c)
 	e1:SetDescription(aux.Stringid(100410035,0))
 	e1:SetCategory(CATEGORY_DESTROY)
 	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
-	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP)
+	e1:SetProperty(EFFECT_FLAG_DELAY)
 	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
 	e1:SetCountLimit(1,100410035)
 	e1:SetCondition(c100410035.condition)
@@ -19,7 +19,7 @@ function c100410035.initial_effect(c)
 	c:RegisterEffect(e1)
 	--special summon
 	local e2=Effect.CreateEffect(c)
-	e2:SetDescription(aux.Stringid(100410035,0))
+	e2:SetDescription(aux.Stringid(100410035,1))
 	e2:SetCategory(CATEGORY_SPECIAL_SUMMON+CATEGORY_REMOVE)
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
@@ -32,8 +32,7 @@ function c100410035.initial_effect(c)
 	c:RegisterEffect(e2)
 end
 function c100410035.condition(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	return c:GetPreviousLocation()==LOCATION_GRAVE and c:GetPreviousControler()==tp
+	return e:GetHandler():GetPreviousLocation()==LOCATION_GRAVE
 end
 function c100410035.target(e,tp,eg,ep,ev,re,r,rp,chk)
 	local g=Duel.GetMatchingGroup(nil,tp,0,LOCATION_MZONE,nil)
@@ -48,12 +47,12 @@ function c100410035.operation(e,tp,eg,ep,ev,re,r,rp)
 		Duel.Destroy(g,REASON_EFFECT)
 	end
 end
-function c100410035.spfilter(c,tp,rp)
+function c100410035.spfilter(c,tp)
 	return c:IsPreviousPosition(POS_FACEUP) and c:GetPreviousControler()==tp and c:GetPreviousTypeOnField()&TYPE_SYNCHRO~=0
-		and c:GetOriginalLevel()==11
+		and c:GetOriginalLevel()==11 and (c:IsReason(REASON_BATTLE) or c:IsReason(REASON_EFFECT) and c:GetReasonPlayer()==1-tp)
 end
 function c100410035.spcon(e,tp,eg,ep,ev,re,r,rp)
-	return not eg:IsContains(e:GetHandler()) and eg:IsExists(c100410035.spfilter,1,nil)
+	return not eg:IsContains(e:GetHandler()) and eg:IsExists(c100410035.spfilter,1,nil,tp)
 end
 function c100410035.rmfilter(c)
 	return c:IsAbleToRemove() and c:IsRace(RACE_ZOMBIE)
