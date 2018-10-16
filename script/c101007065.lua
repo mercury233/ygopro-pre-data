@@ -27,7 +27,7 @@ function c101007065.filter(c,e,tp,m,ft)
 	if bit.band(c:GetType(),0x81)~=0x81
 		or not c:IsCanBeSpecialSummoned(e,SUMMON_TYPE_RITUAL,tp,false,true) then return false end
 	local mg=m:Filter(Card.IsCanBeRitualMaterial,c,c)
-	if c:IsCode(21105106) then return c:ritual_custom_condition(mg,ft) end
+	if c:IsCode(21105106) then return c101007065.c21105106ritual_custom_condition(c,mg,ft,true) end
 	if ft>0 then
 		return mg:CheckWithSumGreater(Card.GetRitualLevel,c:GetLevel(),c)
 	else
@@ -57,19 +57,25 @@ function c101007065.activate(e,tp,eg,ep,ev,re,r,rp)
 	if tc then
 		mg=mg:Filter(Card.IsCanBeRitualMaterial,tc,tc)
 		local mat=nil
-		if ft>0 then
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
-			mat=mg:SelectWithSumGreater(tp,Card.GetRitualLevel,tc:GetLevel(),tc)
+		if tc:IsCode(21105106) then
+			c101007065.c21105106ritual_custom_operation(tc,mg,true)
+			local mat=tc:GetMaterial()
+			Duel.ReleaseRitualMaterial(mat)
 		else
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
-			mat=mg:FilterSelect(tp,c101007065.filterF,1,1,nil,tp,mg,tc)
-			Duel.SetSelectedCard(mat)
-			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
-			local mat2=mg:SelectWithSumGreater(tp,Card.GetRitualLevel,tc:GetLevel(),tc)
-			mat:Merge(mat2)
+			if ft>0 then
+				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
+				mat=mg:SelectWithSumGreater(tp,Card.GetRitualLevel,tc:GetLevel(),tc)
+			else
+				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
+				mat=mg:FilterSelect(tp,c101007065.filterF,1,1,nil,tp,mg,tc)
+				Duel.SetSelectedCard(mat)
+				Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
+				local mat2=mg:SelectWithSumGreater(tp,Card.GetRitualLevel,tc:GetLevel(),tc)
+				mat:Merge(mat2)
+			end
+			tc:SetMaterial(mat)
+			Duel.ReleaseRitualMaterial(mat)
 		end
-		tc:SetMaterial(mat)
-		Duel.ReleaseRitualMaterial(mat)
 		Duel.BreakEffect()
 		Duel.SpecialSummon(tc,SUMMON_TYPE_RITUAL,tp,tp,false,true,POS_FACEUP)
 		tc:CompleteProcedure()
@@ -105,4 +111,42 @@ function c101007065.thop(e,tp,eg,ep,ev,re,r,rp)
 			Duel.SendtoHand(c,nil,REASON_EFFECT)
 		end
 	end
+end
+function c101007065.c21105106filter(c,tp)
+	return c:IsControler(tp) and c:IsLocation(LOCATION_MZONE)
+end
+function c101007065.c21105106ritual_custom_condition(c,mg,ft,greater)
+	--ft is kept for compatablity
+	local tp=c:GetControler()
+	local g=mg:Filter(c101007065.c21105106filter,c,tp)
+	local sg=Group.CreateGroup()
+	return g:IsExists(c101007065.c21105106rselect,1,nil,tp,sg,g,c,greater)
+end
+function c101007065.c21105106rselect(c,tp,sg,mg,rc,greater)
+	sg:AddCard(c)
+	local res=#sg==3 and c101007065.c21105106rgoal(tp,sg,rc,greater)
+		or #sg<3 and mg:IsExists(c101007065.c21105106rselect,1,sg,tp,sg,mg,rc,greater)
+	sg:RemoveCard(c)
+	return res
+end
+function c101007065.c21105106rgoal(tp,sg,rc,greater)
+	if not (#sg==3 and Duel.GetMZoneCount(tp,sg,tp)>0 and sg:GetClassCount(Card.GetRace)==3) then return false end
+	if greater then
+		Duel.SetSelectedCard(sg)
+		return sg:CheckWithSumGreater(Card.GetLevel,rc:GetLevel())
+	else
+		return sg:GetSum(Card.GetLevel)==rc:GetLevel()
+	end
+end
+function c101007065.c21105106ritual_custom_operation(c,mg1,greater)
+	local tp=c:GetControler()
+	local lv=c:GetLevel()
+	local mg=mg1:Filter(c101007065.c21105106filter,c,tp)
+	local sg=Group.CreateGroup()
+	while #sg<3 do
+		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_RELEASE)
+		local g=mg:FilterSelect(tp,c101007065.c21105106rselect,1,1,sg,tp,sg,mg,c,greater)
+		sg:Merge(g)
+	end
+	c:SetMaterial(sg)
 end
