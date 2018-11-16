@@ -1,4 +1,4 @@
---緊急ダイヤ	
+--緊急ダイヤ
 --Urgent Schedule
 --Scripted by AlphaKretin
 function c100411037.initial_effect(c)
@@ -21,6 +21,7 @@ function c100411037.initial_effect(c)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_TO_GRAVE)
+	e2:SetCountLimit(1,100411037+100)
 	e2:SetCondition(c100411037.thcon)
 	e2:SetTarget(c100411037.thtg)
 	e2:SetOperation(c100411037.thop)
@@ -47,20 +48,16 @@ end
 function c100411037.atktg(e,c)
 	return not c:IsRace(RACE_MACHINE)
 end
-function c100411037.spfilter(c,e,tp)
-	return c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_EARTH) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
-end
 function c100411037.spfilter1(c,e,tp)
-	return c100411037.spfilter(c,e,tp) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_EARTH) and c:IsLevelBelow(4) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
 function c100411037.spfilter2(c,e,tp)
-	return c100411037.spfilter(c,e,tp) and c:IsLevelAbove(5) and c:IsCanBeSpecialSummoned(e,0,tp,false,false)
+	return c:IsRace(RACE_MACHINE) and c:IsAttribute(ATTRIBUTE_EARTH) and c:IsLevelAbove(5) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP_DEFENSE)
 end
 function c100411037.sptg(e,tp,eg,ep,ev,re,r,rp,chk)
-	local g=Duel.GetMatchingGroup(c100411037.spfilter,tp,LOCATION_DECK,0,nil,e,tp)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>1 and not Duel.IsPlayerAffectedByEffect(tp,59822133)
-		and Duel.IsExistingMatchingCard(c100411037.filter1,tp,LOCATION_DECK,0,1,nil,e,tp)
-		and Duel.IsExistingMatchingCard(c100411037.filter2,tp,LOCATION_DECK,0,1,nil,e,tp)
+		and Duel.IsExistingMatchingCard(c100411037.spfilter1,tp,LOCATION_DECK,0,1,nil,e,tp)
+		and Duel.IsExistingMatchingCard(c100411037.spfilter2,tp,LOCATION_DECK,0,1,nil,e,tp)
 	end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,2,tp,LOCATION_DECK)
 end
