@@ -38,7 +38,7 @@ end
 function c100238012.value(e,c)
 	local tp=c:GetControler()
 	if Duel.GetTurnPlayer()~=tp then return 0 end
-	return Duel.GetMatchingGroupCount(c100238012.atkfilter,tp,LOCATION_GRAVE,0,nil)*500
+	return Duel.GetMatchingGroupCount(c100238012.atkfilter,tp,LOCATION_GRAVE,0,nil)*300
 end
 function c100238012.tgcon(e,tp,eg,ep,ev,re,r,rp)
 	return e:GetHandler():IsSummonType(SUMMON_TYPE_FUSION) and aux.bdocon(e,tp,eg,ep,ev,re,r,rp)
