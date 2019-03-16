@@ -1,4 +1,4 @@
---サイバネット・クロスワイプ
+--サイバネット・カスケード
 --
 --Script by mercury233
 function c100319033.initial_effect(c)
