@@ -10,11 +10,11 @@ https://ygo233.com/pre
 
 ### 数据整理
 
-[Mercury233](http://mercury233.me/)，[Loki](https://twitter.com/Daniel17173)，伤心暗星尘，duel球球，天天的希望，[Nanahira](https://github.com/purerosefallen)，银龙幽影，今泉红太狼
+[Mercury233](https://mercury233.me/)，[Loki](https://twitter.com/Daniel17173)，伤心暗星尘，duel球球，天天的希望，[Nanahira](https://nanahira.momobako.com/)，银龙幽影，今泉红太狼
 
 ### 资料来源
 
-[任天堂世界论坛](http://bbs.newwise.com/forum-8-1.html)
+[任天堂世界论坛](https://bbs.newwise.com/forum-8-1.html)
 
 ### 脚本来源
 
