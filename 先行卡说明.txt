@@ -26,7 +26,7 @@ YGOPro 233服先行卡补丁
 常见问题
 ------------------------------
 Q.某张卡有BUG！
-A.请到 https://ygo233.com/pre 页面下方留言反馈，或联系233服QQ群里的尸体233（QQ：921439818）。
+A.阅读常见问题，确认无法解决之后，请到 https://ygo233.com/pre 页面下方留言反馈，或联系233服QQ群里的尸体233（QQ：921439818）。
 
 Q.我是YGOPro用户，请详细教我怎么安装。
 A.下载补丁之后，里面有expansions和deck文件夹，把这2个文件夹全部解压到YGOPro的文件夹即可。
@@ -77,7 +77,8 @@ A.这是由于安装方法错误导致。
 此种情况下因为YGOPro原有的文件已被覆盖，请重新下载YGOPro。
 
 Q.单机游戏时，部分效果涉及到旧卡的先行卡出现了BUG怎么办？
-A.这是因为那些旧卡的脚本需要更新。可以等待YGOPro的更新，也可以在设置中启用扩展卡包调试模式来提前使用。
+A.这是因为那些旧卡的脚本需要更新。可以在系统设定中启用扩展卡包调试模式来提前使用，也可以等待YGOPro的更新。
+注意“启用扩展卡包调试”与YGOMobile的“启用扩展卡包”不是一个选项。
 
 Q.启用扩展卡包调试模式时，先行卡正式更新后，那些卡中部分效果涉及到旧卡的卡再次出现了BUG怎么办？
 A.请尝试删除并重新安装先行卡补丁，或关闭扩展卡包调试模式。
@@ -101,11 +102,11 @@ A.删除expansions文件夹，并清空script文件夹（保留scripts.zip）。
 
 数据整理：
 
-[Mercury233](http://mercury233.me/)，[Loki](https://twitter.com/Daniel17173)，伤心暗星尘，duel球球，天天的希望，[Nanahira](https://github.com/purerosefallen)，银龙幽影，今泉红太狼
+[Mercury233](https://mercury233.me/)，[Loki](https://twitter.com/Daniel17173)，伤心暗星尘，duel球球，天天的希望，[Nanahira](https://nanahira.momobako.com/)，银龙幽影，今泉红太狼
 
 资料来源：
 
-[任天堂世界论坛](http://bbs.newwise.com/forum-8-1.html)
+[任天堂世界论坛](https://bbs.newwise.com/forum-8-1.html)
 
 脚本来源：
 
